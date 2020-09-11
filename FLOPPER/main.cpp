@@ -15,10 +15,16 @@ char*signals[] = {
 	"Terminated"
 };
 
-static unsigned char mp = 15;
+char units[] = {
+	0x0, 'K', 'M', 'G', 'T', 'P', 'E'
+};
+
+static unsigned char mp = 13, unit = 0;
 //static std::atomic<unsigned int long long> flops;
 //unsigned int long long tick;
-static unsigned int long long flops, tick;
+static unsigned int long long flops;// , tick;
+static LARGE_INTEGER tick, tick2;
+static FLOAT flopdisp;
 //static unsigned char onesecond = 0;
 
 void sig(int signum) {
@@ -49,9 +55,8 @@ struct atomic
 /*void fclock()
 {
 	while (1) {
-		Sleep(1000);
-		::onesecond = 1;
-		printf("asdf");
+		Sleep(100);
+		QueryPerformanceCounter(&tick2);
 	}
 }*/
 
@@ -64,18 +69,33 @@ int main(int argc, char*argv[])
 	while (1)
 	{
 		//flops = 0;
-		tick = GetTickCount64();
-#pragma omp parallel /*default(shared) shared(flops)*/ num_threads(mp+1) if(mp)
+		//tick = GetTickCount64();
+		unsigned int long long i = 0;
+		//while (i < 100000000000)
+		//do
+			/*for (QueryPerformanceCounter(&tick); tick.QuadPart > tick2.QuadPart - 10000000; QueryPerformanceCounter(&tick2))
+			i++*/
+		QueryPerformanceCounter(&tick);
+#pragma omp parallel /*default(shared) shared(tick,tick2)*/ num_threads(mp+1) if(mp)
 		{
-			unsigned int long long i = 0;
-			while (tick > GetTickCount64() - 5000)
-			//while (i < 100000000000)
+			do
 			{
 				i++;
-			}
+				QueryPerformanceCounter(&tick2);
+			} while (tick.QuadPart > tick2.QuadPart - 10000000);
+			//printf("%llu+",i);
 			flops += i;
 		}
-		printf("%llu\n",flops);
+		flopdisp = flops;
+		while (flopdisp >= 1000 && unit < 7)
+		{
+			unit++;
+			flopdisp /= 1000;
+		}
+		printf("TEST MODE: counted to %.3f%c/second\n", flopdisp, units[unit]);
+		fprintf(stderr,"%d\n", flops);
+		//printf("TEST MODE: counted to %llu\n",flops);
+		unit = 0;
 		flops = 0;
 	}
 	return 0;
