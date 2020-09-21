@@ -64,25 +64,25 @@ enum OPS {
 	RND, FLR, SQRT, PRINT
 };
 
-static unsigned char mp = 1, unit = 0; static unsigned short flags = 0b0000000000000000;
+static unsigned char mp = 0, unit = 0; static unsigned short flags = 0b0000000000000000;
 // FLAGS
 	static const unsigned short flag_mode      = 0b0000000000000001,
-							    flag_avgp      = 0b0000000000000010,
+							    flag_avg       = 0b0000000000000010,
 							    flag_asynk     = 0b0000000000000100,
 							    flag_src       = 0b0000000000001000,
 							    flag_rng       = 0b0000000000010000,
 							    flag_lobi      = 0b0000000000100000,
-							    flag_avg       = 0b0000000001000000,
-							    flag_tdisp     = 0b0000000010000000,
-							    flag_count     = 0b0000000100000000,
-							    flag_quiet     = 0b0000001000000000,
-							    flag_ui        = 0b0000010000000000,
-							    flag_arg2      = 0b0000100000000000,
-							    flag_impc      = 0b0001000000000000;
+							    flag_tdisp     = 0b0000000001000000,
+							    flag_count     = 0b0000000010000000,
+							    flag_quiet     = 0b0000000100000000,
+							    flag_ui        = 0b0000001000000000,
+							    flag_arg2      = 0b0000010000000000,
+							    flag_impc      = 0b0000100000000000;
 static unsigned int long long flops, interval = 10000000, countup = 1000000000, times;
 static LARGE_INTEGER tick, tick2;
 static FLOAT flopdisp;
 static const unsigned int long long onesecond = 10000000;
+FLOAT*avg[];
 
  FLOAT*floats [];
    OPS*ops    [];
@@ -146,10 +146,7 @@ int main(int argc, char*argv[])
 			// scrap anyway, garbage string system*/
 			//if ((strlen(argv[i]) > 2) || ((flags) & (flag_arg2)))
 			if ((flags) & (flag_arg2))
-			{
-				if (flags | flag_arg2)
-					flags &= ~flag_arg2;
-			}
+				flags &= ~flag_arg2;
 			else
 			{
 				if (argv[i][0] == '-')
@@ -162,12 +159,19 @@ int main(int argc, char*argv[])
 							if (argv[i][3] == 's')
 								if (argv[i][4] == 'y')
 									if (argv[i][5] == 'n')
-										if (argv[i][6] == 'k')
+										if (argv[i][6] == 'k' && strlen(argv[i]) == 7)
 											flags |= flag_asynk;
 										else
 											goto badarg;
 									else
 										goto badarg;
+								else
+									goto badarg;
+							else if (argv[i][3] == 'v')
+								if (argv[i][4] == 'g' && strlen(argv[i]) == 5)
+								{
+									flags |= flag_avg;
+								}
 								else
 									goto badarg;
 							else
@@ -203,13 +207,33 @@ int main(int argc, char*argv[])
 									break;
 									// case 'i':
 								case 'c':
-									flags |= flag_mode;
+									if (strlen(argv[i]) == 4)
+										flags |= flag_mode;
+									else
+										goto badarg;
 									break;
 								default:
 									goto badarg;
 									break;
 								}
 							}
+							break;
+						case 'm':
+							if (strlen(argv[i]) == 4)
+							{
+								if (argv[i][3] == 'p')
+								{
+									if (i < argc - 1)
+									{
+										mp = atoi(argv[i + 1]);
+										flags |= flag_arg2;
+									}
+									else
+										printf("No value specified for argument: %s\n", argv[i]);
+								}
+							}
+							else
+								goto badarg;
 							break;
 						default:
 							goto badarg;
