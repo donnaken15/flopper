@@ -58,7 +58,13 @@ char*signals[] = {
 	0, 'K', 'M', 'G', 'T', 'P', 'E'
 };
 
-static unsigned char mp = 30, unit = 0; static unsigned short flags = 0b0000000000000000;
+enum OPS {
+	NUL, ADD, SUB,  MUL,  DIV, POW,
+	SIN, COS, TAN,  LN,   LOG,
+	RND, FLR, SQRT, PRINT
+};
+
+static unsigned char mp = 1, unit = 0; static unsigned short flags = 0b0000000000000000;
 // FLAGS
 	static const unsigned short flag_mode      = 0b0000000000000001,
 							    flag_avgp      = 0b0000000000000010,
@@ -69,11 +75,17 @@ static unsigned char mp = 30, unit = 0; static unsigned short flags = 0b00000000
 							    flag_avg       = 0b0000000001000000,
 							    flag_tdisp     = 0b0000000010000000,
 							    flag_count     = 0b0000000100000000,
-							    flag_quiet     = 0b0000001000000000;
-static unsigned int long long flops, interval = 10000000, countup = 1000000000;
+							    flag_quiet     = 0b0000001000000000,
+							    flag_ui        = 0b0000010000000000,
+							    flag_arg2      = 0b0000100000000000,
+							    flag_impc      = 0b0001000000000000;
+static unsigned int long long flops, interval = 10000000, countup = 1000000000, times;
 static LARGE_INTEGER tick, tick2;
 static FLOAT flopdisp;
-FLOAT*floats[];
+static const unsigned int long long onesecond = 10000000;
+
+ FLOAT*floats [];
+   OPS*ops    [];
 
 void sig(int signum) {
 	puts(signals[signum]);
@@ -93,20 +105,6 @@ CPU - 3.0 GFLOPS/s - floats involved maybe
 CPU + MP.# - 6.0 GLOPS/s - 1.5G/thread avg
 
 */
-
-/*template<typename BaseType>
-struct atomic
-{
-	operator BaseType () const volatile;
-};*/
-
-/*void fclock()
-{
-	while (1) {
-		Sleep(100);
-		QueryPerformanceCounter(&tick2);
-	}
-}*/
 
 int main(int argc, char*argv[])
 {
@@ -146,60 +144,104 @@ int main(int argc, char*argv[])
 			// which is faster in this case, ifs or else ifs,
 			// doesnt affect anything to use either i believe
 			// scrap anyway, garbage string system*/
-			if (argv[i][0])
+			//if ((strlen(argv[i]) > 2) || ((flags) & (flag_arg2)))
+			if ((flags) & (flag_arg2))
 			{
-
+				if (flags | flag_arg2)
+					flags &= ~flag_arg2;
+			}
+			else
+			{
+				if (argv[i][0] == '-')
+				{
+					if (argv[i][1] == '-')
+					{
+						switch (argv[i][2])
+						{
+						case 'a':
+							if (argv[i][3] == 's')
+								if (argv[i][4] == 'y')
+									if (argv[i][5] == 'n')
+										if (argv[i][6] == 'k')
+											flags |= flag_asynk;
+										else
+											goto badarg;
+									else
+										goto badarg;
+								else
+									goto badarg;
+							else
+								goto badarg;
+							break;
+						case 't':
+							if (strlen(argv[i]) == 3)
+							{
+								if (i < argc - 1)
+								{
+									times = atoi(argv[i + 1]);
+									flags |= flag_arg2;
+								}
+								else
+									printf("No value specified for argument: %s\n", argv[i]);
+							}
+							else
+							{
+								switch (argv[i][3])
+								{
+								case 'd':
+									if (argv[i][4] == 'i')
+										if (argv[i][5] == 's')
+											if (argv[i][6] == 'p')
+												flags |= flag_tdisp;
+											else
+												goto badarg;
+										else
+											goto badarg;
+									else
+										goto badarg;
+									//maybe make func that uses string and return true if chars match and goto badarg if false
+									break;
+									// case 'i':
+								case 'c':
+									flags |= flag_mode;
+									break;
+								default:
+									goto badarg;
+									break;
+								}
+							}
+							break;
+						default:
+							goto badarg;
+							break;
+						}
+					}
+					else goto badarg;
+				}
+				else
+				{
+				badarg:
+					printf("Invalid argument: %s\n", argv[i]);
+				}
 			}
 		}
 		while (1)
 		{
-			//flops = 0;
-			//tick = GetTickCount64();
-			//while (i < 100000000000)
-			//do
-				/*for (QueryPerformanceCounter(&tick); tick.QuadPart > tick2.QuadPart - 10000000; QueryPerformanceCounter(&tick2))
-				i++*/
-				/*if (flags & flag_asynk)
+			{
+				unsigned int long long i = 0;
+				QueryPerformanceCounter(&tick);
+				tick.QuadPart += interval;
+#pragma omp parallel num_threads(mp+1) if(mp)
 				{
-	#pragma omp parallel num_threads(mp+1) if(mp)
-					while (1)
+					do
 					{
-						do
-						{
-							i++;
-						} while (i < 1000000);
-						//printf("%llu+",i);
-						flops += i;
-					}
-				} else *//*{
-					QueryPerformanceCounter(&tick);
-					tick.QuadPart += interval;
-	#pragma omp parallel /*default(shared) shared(tick,tick2)* num_threads(mp+1) if(mp)
-					{
-						do
-						{
-							i++;
-							QueryPerformanceCounter(&tick2);
-						} while (tick.QuadPart > tick2.QuadPart);
-						//printf("%llu+",i);
-						flops += i;
-					}
-				}*/
-				{
-					unsigned int long long i = 0;
-					QueryPerformanceCounter(&tick);
-					tick.QuadPart += interval;
-	#pragma omp parallel num_threads(mp+1) if(mp)
-					{
-						do
-						{
-							i++;
-							QueryPerformanceCounter(&tick2);
-						} while (tick.QuadPart > tick2.QuadPart);
-						//printf("%llu+",i);
-						flops += i;
-					}
+						i++;
+						QueryPerformanceCounter(&tick2);
+					} while (tick.QuadPart > tick2.QuadPart);
+					//printf("%llu+",i);
+					flops += i;
 				}
+			}
 			/*{
 				unsigned int long long i = 0;
 				QueryPerformanceCounter(&tick);
@@ -214,20 +256,6 @@ int main(int argc, char*argv[])
 				QueryPerformanceCounter(&tick2);
 				flops += i;
 			}*/
-			/*while (1)
-			{
-#pragma omp parallel num_threads(mp+1) if(mp)
-				{
-					unsigned int long long i = 0;
-					do
-					{
-						i++;
-					} while (i < 1000000000);
-					//printf("%llu+",i);
-					flops += i;
-					puts("counted to 1000000000");
-				}
-			}*/
 			flopdisp = FLOAT(flops);
 			// which is better, cast or FLOAT(i)
 			while (flopdisp >= 1000 && unit < 7)
@@ -235,10 +263,13 @@ int main(int argc, char*argv[])
 				unit++;
 				flopdisp /= 1000; //incoming Xibif** or something
 			}
+			printf("CPU ");
+			if (mp > 0)
+				printf("+ MTx%03d ", mp+1);
 			// --tc
-			//printf("CPU - %.3f%cFLOPS in %.5fs\n", flopdisp, units[unit], (FLOAT(tick2.QuadPart - tick.QuadPart) / 10000000));
+			printf("@ %.3f %cFLOPS/%.2fs\n", flopdisp, units[unit], FLOAT(interval / 10000000));
 			// --ti
-			printf("CPU - %.3f%cFLOPS/%.2fs\n", flopdisp, units[unit], FLOAT(interval / 10000000));
+			//printf("@ %.3f %cFLOPS in %.5fs\n", flopdisp, units[unit], (FLOAT(tick2.QuadPart - tick.QuadPart) / 10000000));
 			unit = 0;
 			flops = 0;
 		}
