@@ -1,0 +1,5 @@
+filelist when adding stuff to installforge
+also case sensitive correcting maybe too :P
+FLOPPER.EXE
+FLOPPER-ui.EXE
+whatever else

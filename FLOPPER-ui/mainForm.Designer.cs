@@ -33,32 +33,35 @@
             this.list_floats = new System.Windows.Forms.ListBox();
             this.list_ops = new System.Windows.Forms.ListBox();
             this.panel_floats = new System.Windows.Forms.GroupBox();
+            this.floats_pi = new System.Windows.Forms.Button();
+            this.floats_rng = new System.Windows.Forms.Button();
+            this.floats_rem = new System.Windows.Forms.Button();
+            this.floats_add = new System.Windows.Forms.Button();
             this.panel_ops = new System.Windows.Forms.GroupBox();
             this.panel_src = new System.Windows.Forms.GroupBox();
-            this.src_cpu = new System.Windows.Forms.RadioButton();
             this.src_gpu = new System.Windows.Forms.RadioButton();
+            this.src_cpu = new System.Windows.Forms.RadioButton();
             this.panel_profiles = new System.Windows.Forms.GroupBox();
             this.panel_control = new System.Windows.Forms.GroupBox();
             this.control_start = new System.Windows.Forms.Button();
             this.panel_opt = new System.Windows.Forms.GroupBox();
-            this.floats_add = new System.Windows.Forms.Button();
-            this.floats_rem = new System.Windows.Forms.Button();
-            this.floats_rng = new System.Windows.Forms.Button();
-            this.floats_pi = new System.Windows.Forms.Button();
-            this.panel_flopslist = new System.Windows.Forms.SplitContainer();
-            this.panel_mode = new System.Windows.Forms.Panel();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.label_mode = new System.Windows.Forms.Label();
+            this.panel_mode = new System.Windows.Forms.Panel();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.panel_flopslist = new System.Windows.Forms.SplitContainer();
+            this.ops_add = new System.Windows.Forms.Button();
+            this.ops_rem = new System.Windows.Forms.Button();
+            this.ops_rand = new System.Windows.Forms.Button();
             this.panel_floats.SuspendLayout();
             this.panel_ops.SuspendLayout();
             this.panel_src.SuspendLayout();
             this.panel_control.SuspendLayout();
             this.panel_opt.SuspendLayout();
+            this.panel_mode.SuspendLayout();
             this.panel_flopslist.Panel1.SuspendLayout();
             this.panel_flopslist.Panel2.SuspendLayout();
             this.panel_flopslist.SuspendLayout();
-            this.panel_mode.SuspendLayout();
             this.SuspendLayout();
             // 
             // flopout
@@ -72,7 +75,7 @@
             this.flopout.ReadOnly = true;
             this.flopout.Size = new System.Drawing.Size(297, 300);
             this.flopout.TabIndex = 0;
-            this.flopout.Text = "CPU - 0.000 FLOPS/s";
+            this.flopout.Text = "Welcome to FLOPPER!";
             // 
             // list_floats
             // 
@@ -115,8 +118,55 @@
             this.panel_floats.TabStop = false;
             this.panel_floats.Text = "Floats";
             // 
+            // floats_pi
+            // 
+            this.floats_pi.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.floats_pi.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.floats_pi.Location = new System.Drawing.Point(131, 113);
+            this.floats_pi.Name = "floats_pi";
+            this.floats_pi.Size = new System.Drawing.Size(15, 23);
+            this.floats_pi.TabIndex = 5;
+            this.floats_pi.Text = "π";
+            this.floats_pi.UseVisualStyleBackColor = true;
+            // 
+            // floats_rng
+            // 
+            this.floats_rng.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.floats_rng.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.floats_rng.Location = new System.Drawing.Point(131, 84);
+            this.floats_rng.Name = "floats_rng";
+            this.floats_rng.Size = new System.Drawing.Size(15, 23);
+            this.floats_rng.TabIndex = 4;
+            this.floats_rng.Text = "R";
+            this.floats_rng.UseVisualStyleBackColor = true;
+            // 
+            // floats_rem
+            // 
+            this.floats_rem.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.floats_rem.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.floats_rem.Location = new System.Drawing.Point(131, 54);
+            this.floats_rem.Name = "floats_rem";
+            this.floats_rem.Size = new System.Drawing.Size(15, 23);
+            this.floats_rem.TabIndex = 3;
+            this.floats_rem.Text = "-";
+            this.floats_rem.UseVisualStyleBackColor = true;
+            // 
+            // floats_add
+            // 
+            this.floats_add.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.floats_add.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.floats_add.Location = new System.Drawing.Point(131, 24);
+            this.floats_add.Name = "floats_add";
+            this.floats_add.Size = new System.Drawing.Size(15, 23);
+            this.floats_add.TabIndex = 2;
+            this.floats_add.Text = "+";
+            this.floats_add.UseVisualStyleBackColor = true;
+            // 
             // panel_ops
             // 
+            this.panel_ops.Controls.Add(this.ops_rand);
+            this.panel_ops.Controls.Add(this.ops_rem);
+            this.panel_ops.Controls.Add(this.ops_add);
             this.panel_ops.Controls.Add(this.list_ops);
             this.panel_ops.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_ops.FlatStyle = System.Windows.Forms.FlatStyle.System;
@@ -139,17 +189,6 @@
             this.panel_src.TabStop = false;
             this.panel_src.Text = "Device";
             // 
-            // src_cpu
-            // 
-            this.src_cpu.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.src_cpu.Location = new System.Drawing.Point(5, 16);
-            this.src_cpu.Name = "src_cpu";
-            this.src_cpu.Size = new System.Drawing.Size(44, 24);
-            this.src_cpu.TabIndex = 0;
-            this.src_cpu.TabStop = true;
-            this.src_cpu.Text = "CPU";
-            this.src_cpu.UseVisualStyleBackColor = true;
-            // 
             // src_gpu
             // 
             this.src_gpu.FlatStyle = System.Windows.Forms.FlatStyle.System;
@@ -160,6 +199,17 @@
             this.src_gpu.TabStop = true;
             this.src_gpu.Text = "GPU";
             this.src_gpu.UseVisualStyleBackColor = true;
+            // 
+            // src_cpu
+            // 
+            this.src_cpu.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.src_cpu.Location = new System.Drawing.Point(5, 16);
+            this.src_cpu.Name = "src_cpu";
+            this.src_cpu.Size = new System.Drawing.Size(44, 24);
+            this.src_cpu.TabIndex = 0;
+            this.src_cpu.TabStop = true;
+            this.src_cpu.Text = "CPU";
+            this.src_cpu.UseVisualStyleBackColor = true;
             // 
             // panel_profiles
             // 
@@ -203,49 +253,45 @@
             this.panel_opt.TabStop = false;
             this.panel_opt.Text = "Settings";
             // 
-            // floats_add
+            // label_mode
             // 
-            this.floats_add.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.floats_add.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.floats_add.Location = new System.Drawing.Point(131, 24);
-            this.floats_add.Name = "floats_add";
-            this.floats_add.Size = new System.Drawing.Size(15, 23);
-            this.floats_add.TabIndex = 2;
-            this.floats_add.Text = "+";
-            this.floats_add.UseVisualStyleBackColor = true;
+            this.label_mode.AutoSize = true;
+            this.label_mode.Location = new System.Drawing.Point(3, 16);
+            this.label_mode.Name = "label_mode";
+            this.label_mode.Size = new System.Drawing.Size(37, 13);
+            this.label_mode.TabIndex = 1;
+            this.label_mode.Text = "Mode:";
             // 
-            // floats_rem
+            // panel_mode
             // 
-            this.floats_rem.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.floats_rem.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.floats_rem.Location = new System.Drawing.Point(131, 54);
-            this.floats_rem.Name = "floats_rem";
-            this.floats_rem.Size = new System.Drawing.Size(15, 23);
-            this.floats_rem.TabIndex = 3;
-            this.floats_rem.Text = "-";
-            this.floats_rem.UseVisualStyleBackColor = true;
+            this.panel_mode.Controls.Add(this.radioButton2);
+            this.panel_mode.Controls.Add(this.radioButton1);
+            this.panel_mode.Location = new System.Drawing.Point(14, 32);
+            this.panel_mode.Name = "panel_mode";
+            this.panel_mode.Size = new System.Drawing.Size(124, 22);
+            this.panel_mode.TabIndex = 0;
             // 
-            // floats_rng
+            // radioButton2
             // 
-            this.floats_rng.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.floats_rng.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.floats_rng.Location = new System.Drawing.Point(131, 84);
-            this.floats_rng.Name = "floats_rng";
-            this.floats_rng.Size = new System.Drawing.Size(15, 23);
-            this.floats_rng.TabIndex = 4;
-            this.floats_rng.Text = "R";
-            this.floats_rng.UseVisualStyleBackColor = true;
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(69, 3);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(53, 17);
+            this.radioButton2.TabIndex = 1;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "Count";
+            this.radioButton2.UseVisualStyleBackColor = true;
             // 
-            // floats_pi
+            // radioButton1
             // 
-            this.floats_pi.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.floats_pi.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.floats_pi.Location = new System.Drawing.Point(131, 113);
-            this.floats_pi.Name = "floats_pi";
-            this.floats_pi.Size = new System.Drawing.Size(15, 23);
-            this.floats_pi.TabIndex = 5;
-            this.floats_pi.Text = "π";
-            this.floats_pi.UseVisualStyleBackColor = true;
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(3, 3);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(60, 17);
+            this.radioButton1.TabIndex = 0;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "Interval";
+            this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // panel_flopslist
             // 
@@ -264,45 +310,33 @@
             this.panel_flopslist.SplitterDistance = 148;
             this.panel_flopslist.TabIndex = 9;
             // 
-            // panel_mode
+            // ops_add
             // 
-            this.panel_mode.Controls.Add(this.radioButton2);
-            this.panel_mode.Controls.Add(this.radioButton1);
-            this.panel_mode.Location = new System.Drawing.Point(14, 32);
-            this.panel_mode.Name = "panel_mode";
-            this.panel_mode.Size = new System.Drawing.Size(124, 22);
-            this.panel_mode.TabIndex = 0;
+            this.ops_add.Location = new System.Drawing.Point(131, 19);
+            this.ops_add.Name = "ops_add";
+            this.ops_add.Size = new System.Drawing.Size(14, 23);
+            this.ops_add.TabIndex = 3;
+            this.ops_add.Text = "+";
+            this.ops_add.UseVisualStyleBackColor = true;
+            this.ops_add.Click += new System.EventHandler(this.ops_add_Click);
             // 
-            // radioButton1
+            // ops_rem
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(3, 3);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(60, 17);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Interval";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.ops_rem.Location = new System.Drawing.Point(131, 49);
+            this.ops_rem.Name = "ops_rem";
+            this.ops_rem.Size = new System.Drawing.Size(15, 23);
+            this.ops_rem.TabIndex = 4;
+            this.ops_rem.Text = "-";
+            this.ops_rem.UseVisualStyleBackColor = true;
             // 
-            // radioButton2
+            // ops_rand
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(69, 3);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(53, 17);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Count";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // label_mode
-            // 
-            this.label_mode.AutoSize = true;
-            this.label_mode.Location = new System.Drawing.Point(3, 16);
-            this.label_mode.Name = "label_mode";
-            this.label_mode.Size = new System.Drawing.Size(37, 13);
-            this.label_mode.TabIndex = 1;
-            this.label_mode.Text = "Mode:";
+            this.ops_rand.Location = new System.Drawing.Point(131, 77);
+            this.ops_rand.Name = "ops_rand";
+            this.ops_rand.Size = new System.Drawing.Size(14, 23);
+            this.ops_rand.TabIndex = 5;
+            this.ops_rand.Text = "R";
+            this.ops_rand.UseVisualStyleBackColor = true;
             // 
             // mainForm
             // 
@@ -327,11 +361,11 @@
             this.panel_control.ResumeLayout(false);
             this.panel_opt.ResumeLayout(false);
             this.panel_opt.PerformLayout();
+            this.panel_mode.ResumeLayout(false);
+            this.panel_mode.PerformLayout();
             this.panel_flopslist.Panel1.ResumeLayout(false);
             this.panel_flopslist.Panel2.ResumeLayout(false);
             this.panel_flopslist.ResumeLayout(false);
-            this.panel_mode.ResumeLayout(false);
-            this.panel_mode.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -360,5 +394,8 @@
         private System.Windows.Forms.Panel panel_mode;
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.Button ops_rand;
+        private System.Windows.Forms.Button ops_rem;
+        private System.Windows.Forms.Button ops_add;
     }
 }

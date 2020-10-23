@@ -289,7 +289,7 @@ int main(int argc, char*argv[])
 			}
 			printf("CPU ");
 			if (mp > 0)
-				printf("+ MTx%03d ", mp+1);
+				printf("+ MTx%03d ", mp);
 			// --tc
 			printf("@ %.3f %cFLOPS/%.2fs\n", flopdisp, units[unit], FLOAT(interval / 10000000));
 			// --ti

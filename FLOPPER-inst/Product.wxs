@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="7E8007C7-F0F5-47ED-9376-AABD14AAE54F" Name="FLOPPER" Language="1033" Version="0.4.1.2" Manufacturer="donnaken15" UpgradeCode="299C1461-AADE-4E3B-8538-CF86C0C9565B">
+        <Package Description="Stress test your processing units" Comments="Simple test" InstallerVersion="100" Compressed="yes" />
+        <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder" Name="PFiles">
+                <Directory Name="FLOPPER" Id="FLOPPER">
+                    <Component Id="FLOPPERmain" Guid="47446633-1F1C-4D1E-A4D2-20BBD50F2FB6" Directory="FLOPPER" Feature="DefaultFeature">
+                        <File Id="FLOPPER.EXE" Name="FLOPPER.EXE" Source="..\test\FLOPPER.EXE" />
+                    </Component>
+                    <Component Id="FLOPPERui" Guid="A428586F-A17F-4880-95F3-EB990CF627FC" Directory="FLOPPERui">
+                        <File Id="FLOPPER_UI.EXE" Name="FLOPPER-ui.EXE" Source="..\test\FLOPPER-ui.EXE" />
+                    </Component>
+                </Directory>
+            </Directory>
+        </Directory>
+        <Feature Id="DefaultFeature" Title="FLOPPER" Level="1" Description="Install the CLIent to stress test for FLOPs (advanced use)" ConfigurableDirectory="FLOPPER">
+            <Feature Id="FLOPPERui" Level="1" Title="FLOPPER Interface">
+                <ComponentRef Id="FLOPPERui" />
+            </Feature>
+            <ComponentRef Id="FLOPPERmain" />
+        </Feature>
+        <UI>
+            <InstallUISequence>
+                <Show Dialog="WelcomeDlg" />
+            </InstallUISequence>
+        </UI>
+        <UIRef Id="WixUI_Mondo" />
+        <PropertyRef Id="NETFRAMEWORK20" />
+        <Condition Message="This application requires .NET Framework 2.0 to use the graphical interface">Installed OR NETFRAMEWORK20</Condition>
+        <WixVariable Id="WixUILicenseRtf" Value="E:\FLOPPER\WI_license.rtf" />
+        <WixVariable Id="WixUIDialogBmp" Value="E:\FLOPPER\gfx\wix.bmp" />
+        <Icon Id="DesktopIcon.exe" SourceFile="..\test\FLOPPER-ui.EXE" />
+        <Icon Id="StartMenuIcon.exe" SourceFile="..\test\FLOPPER-ui.EXE" />
+    </Product>
+</Wix>
